@@ -1,8 +1,6 @@
 package com.tnf.productlist.controller;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +40,7 @@ public class ProductController {
 	    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
 	    public void updateProduct(@PathVariable Long id, @RequestBody @Validated ProductDto request) {
 	        // Getting the requiring product; or throwing exception if not found
-	        final Optional<Product> product = productService.getProductById(id);
+	        final Product product = productService.getProductById(id);
 
 	        // Updating a product in the application...
 	        productService.updateProduct(product, request.getName(), request.getDescription(), request.getCurrency(), request.getPrice());

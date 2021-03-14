@@ -1,7 +1,6 @@
 package com.tnf.productlist.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.tnf.productlist.entity.Product;
 
@@ -26,7 +25,7 @@ public interface ProductService {
      * @param id the id of the product to look for
      * @return the product (if any)
      */
-    Optional<Product> getProductById(Long id);
+    Product getProductById(Long id);
 
     /**
      * Creates a product.
@@ -50,6 +49,6 @@ public interface ProductService {
      * @param currency the new product currency
      * @param price the new product price
      */
-    void updateProduct(Optional<Product> product, String name, String desc, String currency, double price);
+    void updateProduct(Product product, String name, String desc, String currency, double price);
 
 }

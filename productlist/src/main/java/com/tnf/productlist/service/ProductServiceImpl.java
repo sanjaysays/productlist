@@ -1,7 +1,6 @@
 package com.tnf.productlist.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.tnf.productlist.dao.ProductRepository;
 import com.tnf.productlist.entity.Product;
+import com.tnf.productlist.exception.ResourceNotFoundException;
 import com.tnf.productlist.util.CurrencyExchangeUtil;
 
 @Service
@@ -28,9 +28,11 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public Optional<Product> getProductById(Long id) {
+	public Product getProductById(Long id) {
 		// TODO Auto-generated method stub
-		return repo.findById(id);
+		Product product = repo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not found Tutorial with id = " + id));
+		
+		return product;
 	}
 
 	@Override
@@ -51,7 +53,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public void updateProduct(Optional<Product> product, String name, String desc, String currency, double price) {
+	public void updateProduct(Product product, String name, String desc, String currency, double price) {
 		if (!Product.CURRENCY.equals(currency)) {
             price = curr.convert(currency, Product.CURRENCY, price);
         }
@@ -59,10 +61,10 @@ public class ProductServiceImpl implements ProductService{
         // Round up only 2 decimals...
         price = (double) Math.round(price * 100) / 100;
 
-        product.get().setName(name);
-        product.get().setDescription(desc);
-        product.get().setPrice(price);
-        repo.save(product.get());
+        product.setName(name);
+        product.setDescription(desc);
+        product.setPrice(price);
+        repo.save(product);
 	}
 
 }
